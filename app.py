@@ -5,20 +5,23 @@ from flask import Flask, render_template, request, jsonify, session
 from flask_session import Session
 import requests
 
-# Read the system prompt from 'system_prompt.txt'
-with open('system_prompt.txt', 'r', encoding='utf-8') as f:
-    SYSTEM_PROMPT = f.read()
-
 app = Flask(__name__)
 
 # Configure server-side session
-app.config['SECRET_KEY'] = 'freedom'  
+app.config['SECRET_KEY'] = 'freedom'  # You can replace 'freedom' with your desired secret key
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
 # Your API key and endpoint
 API_KEY = os.environ.get('API_KEY')
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
+
+# Load the system prompt from the environment variable
+SYSTEM_PROMPT = os.environ.get('SYSTEM_PROMPT')
+
+# Ensure that SYSTEM_PROMPT is set
+if not SYSTEM_PROMPT:
+    raise ValueError("SYSTEM_PROMPT environment variable not set.")
 
 def get_bot_response(user_input):
     headers = {
@@ -59,8 +62,9 @@ def get_bot_response(user_input):
     except requests.exceptions.HTTPError as e:
         # Print the error and response for debugging
         print(f"HTTP error occurred: {e}")
-        print(f"Response status code: {response.status_code}")
-        print(f"Response content: {response.text}")
+        if response is not None:
+            print(f"Response status code: {response.status_code}")
+            print(f"Response content: {response.text}")
         return "Sorry, I'm having trouble processing your request right now."
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -79,5 +83,5 @@ def get_response():
     return jsonify({'bot_response': bot_response})
 
 if __name__ == '__main__':
+    # Use the port specified by the environment or default to 5000
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
-
