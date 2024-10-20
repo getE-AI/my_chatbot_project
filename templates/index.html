@@ -1,0 +1,54 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <div class="chat-container">
+        <div id="chatbox">
+            <div id="chatlog"></div>
+        </div>
+        <form id="chat-form">
+            <input type="text" id="user-input" autocomplete="off" placeholder="Type your message...">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+    <!-- Include jQuery from CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- JavaScript Code -->
+    <script>
+        $(document).ready(function() {
+            $('#chat-form').on('submit', function(e) {
+                e.preventDefault();
+                var user_input = $('#user-input').val();
+                if (user_input.trim() === '') {
+                    return;
+                }
+                $('#chatlog').append('<div class="user-message"><strong>You:</strong> ' + user_input + '</div>');
+                $('#user-input').val('');
+
+                $.ajax({
+                    url: '/get_response',
+                    method: 'POST',
+                    data: { user_input: user_input },
+                    success: function(response) {
+                        $('#chatlog').append('<div class="bot-message"><strong>Bot:</strong> ' + response.bot_response + '</div>');
+                        $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
+                    },
+                    error: function() {
+                        $('#chatlog').append('<div class="bot-message"><strong>Bot:</strong> Sorry, there was an error processing your request.</div>');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

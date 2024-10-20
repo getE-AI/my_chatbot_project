@@ -1,0 +1,4 @@
+.env
+system_prompt.txt
+*.pyc
+__pycache__/
