@@ -12,22 +12,28 @@
 
     <!-- Include FontAwesome for Icons (Optional) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-
-    <!-- Favicon (Optional) -->
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 </head>
 <body>
-    <!-- Matrix Background -->
-    <canvas id="matrix"></canvas>
-
     <!-- Chat Interface -->
     <div class="chat-container">
-        <!-- ... existing chat interface ... -->
+        <!-- Header -->
+        <header>
+            <h1>Tess Best</h1>
+        </header>
+
+        <!-- Chatbox -->
+        <div id="chatbox" class="chatbox">
+            <!-- Messages will appear here -->
+        </div>
+
+        <!-- Chat Form -->
+        <form id="chat-form">
+            <input type="text" id="user_input" placeholder="Type your message..." autocomplete="off">
+            <button type="submit" id="send_button"><i class="fas fa-paper-plane"></i></button>
+        </form>
     </div>
 
-    <!-- Scripts -->
-    <script src="{{ url_for('static', filename='matrix.js') }}"></script>
+    <!-- Custom Script -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
-
 </html>
