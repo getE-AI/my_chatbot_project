@@ -19,11 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message', sender);
 
-        const textSpan = document.createElement('div');
-        textSpan.classList.add('text');
-        textSpan.innerText = text;
+        const textDiv = document.createElement('div');
+        textDiv.classList.add('text');
+        textDiv.innerText = text;
 
-        messageDiv.appendChild(textSpan);
+        messageDiv.appendChild(textDiv);
         chatbox.appendChild(messageDiv);
         chatbox.scrollTop = chatbox.scrollHeight;
     }
